@@ -132,9 +132,9 @@ inheritedPropertyNames(Date)
 
 ```javascript
 function copyObject(orig) {
-  var copy = Object.create(Object.getPrototypeOf(orig));
-  copyOwnPropertiesFrom(copy, orig);
-  return copy;
+-  var copy = Object.create(Object.getPrototypeOf(orig));
+ -  copyOwnPropertiesFrom(copy, orig);
+ -  return copy;
 }
 
 function copyOwnPropertiesFrom(target, source) {
@@ -145,6 +145,17 @@ function copyOwnPropertiesFrom(target, source) {
     Object.defineProperty(target, propKey, desc);
   });
   return target;
+}
+```
+
+另一种更简单的写法，是利用 ES2017 才引入标准的`Object.getOwnPropertyDescriptors`方法。
+
+```javascript
+function copyObject(orig) {
+  return Object.create(
+    Object.getPrototypeOf(orig),
+    Object.getOwnPropertyDescriptors(orig)
+  );
 }
 ```
 
